@@ -1,20 +1,55 @@
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import React from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import Home from './Home';
+import Products from './components/Products';
+import Details from './components/Details';
+import { Image } from 'react-native';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <NavigationContainer>
+        <StatusBar style="dark" />
+        <Stack.Navigator screenOptions={{
+            headerTintColor: "black",
+            headerBackTitle: "Retour",
+            headerStyle: {
+                backgroundColor: "#FFCF03"
+            }
+        }}>
+
+            <Stack.Screen
+              name='Home'
+              component={Home}
+              options={{
+                title: 'Retour',
+                headerTitle: () => 
+                  <Image
+                    source={require('./img/logo.png')}
+                    style={{ width: 22, height: 25 }}
+                  />
+                ,
+              }}
+            />
+
+            <Stack.Screen
+              name='Products'
+              component={Products}
+            />
+
+            <Stack.Screen
+              name='Details'
+              component={Details}
+              options={({ route }) => ({
+                title: route.params.item.name,
+              })}
+            />
+        </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
